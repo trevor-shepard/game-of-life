@@ -18,22 +18,23 @@ const CellContainer = styled('div')`
     padding: 5px;
     height: 5px;
     width: 5px;
-    border: 1px solid black;
+    border: 2px solid #3C1922;
     border-radius: 3px;
     font-size: 10px;
     margin: 5px;
 `
 
 const AliveContainer = styled(CellContainer)`
-    border-color: blue;
-`
-
-const DeadContainer = styled(CellContainer)`
-    border-color: red
+    background-color: #B6EBF0;
 `
 
 const HistoryContainer = styled(CellContainer)`
-    border-color: yellow
+    background-color: #FCE98F;
 `
+
+const DeadContainer = styled(CellContainer)`
+    background-color: #94685F;
+`
+
 
 export default Cell

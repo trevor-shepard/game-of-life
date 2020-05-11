@@ -1,9 +1,14 @@
-import React, { FunctionComponent, useState, useEffect } from 'react'
+import React, { FunctionComponent, useState, useEffect, SetStateAction, Dispatch } from 'react'
 import styled from '@emotion/styled'
 
-import Row from './Row'
+import Row from '../Row'
 type GridProps = {
-    level: Level
+    level: Level,
+    won: boolean,
+    lost: boolean,
+    setWon: Dispatch<SetStateAction<boolean>>
+    setLost: Dispatch<SetStateAction<boolean>>
+
 }
 
 interface Level {
@@ -12,7 +17,7 @@ interface Level {
     // target?: [number, number]
 }
 
-const Board:FunctionComponent<GridProps> = ({ level }) => {
+const Board:FunctionComponent<GridProps> = ({ level, won, lost, setWon, setLost }) => {
     const { 
         initialState,
         // type 
@@ -20,8 +25,7 @@ const Board:FunctionComponent<GridProps> = ({ level }) => {
     
     const [ boardState, setBoardState ] = useState(initialState)
     const [ historyState, setHistoryState ] = useState(initialState)
-    const [ won, setWon ] = useState(false)
-    const [ lost, setLost ] = useState(false)
+
     const [time, setTime] = useState(1)
 
     const mirrorBoard: boolean[][] =JSON.parse(JSON.stringify(boardState));
@@ -81,6 +85,7 @@ const Board:FunctionComponent<GridProps> = ({ level }) => {
 
 
     // game cycle
+    
     useEffect(() => {
         checkLost()
         checkWon()
@@ -96,10 +101,13 @@ const Board:FunctionComponent<GridProps> = ({ level }) => {
             }
         }
         
-        setBoardState(mirrorBoard)
-        const timer = setInterval(() => setTime(time + 1), 1000)
-        return () => clearInterval(timer)
+        if (!won && !lost) { 
+            setBoardState(mirrorBoard)
+            const timer = setInterval(() => setTime(time + 1), 1000)
+            return () => clearInterval(timer)
+        }
     }, [time])
+    
 
     
     const grid: JSX.Element[]  = Array.from(new Array(initialState.length), (_, y) =>( <Row key={`${y}-row`} y={y} cellHistory={historyState[y]} cellStates={boardState[y]} handleClick={handleClick} />))
