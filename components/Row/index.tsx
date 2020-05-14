@@ -12,6 +12,8 @@ type RowProps = {
 
 const CellRow: React.FunctionComponent<RowProps> = ({ cellStates, y, handleClick, cellHistory }) => {
 
+    if (!cellStates) debugger
+
     const cells = cellStates.map((alive, x) => <Cell key={`y-${y}, x-${x}`} history={cellHistory[x]} alive={alive} handleClick={handleClick(y, x)} />)
 
     return (

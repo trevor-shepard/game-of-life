@@ -1,5 +1,9 @@
-import * as React from 'react'
-import styled from '@emotion/styled'
+/** @jsx jsx */
+import { FunctionComponent, useEffect, useState } from 'react'
+import { jsx } from '@emotion/core'
+import {useSpring, animated as a} from 'react-spring'
+
+import Theme from '../../utils/theme'
 
 type CellProps = {
     alive: boolean,
@@ -7,34 +11,39 @@ type CellProps = {
     handleClick(): void
 }
 
-const Cell: React.FunctionComponent<CellProps> = ({ alive, handleClick, history }) => {
-    
-    
-    return alive ? (<AliveContainer  onClick={handleClick} /> ) : history ? (<HistoryContainer  onClick={handleClick} /> ) : (<DeadContainer  onClick={handleClick} /> )
-       
+const CellContainer:FunctionComponent<CellProps> = ({ alive, history, handleClick}) => {
+    const [ toggle, setToggle ] = useState(false)
+    const [transform, set ] = useSpring(() => ({
+        transform: `perspective(600px) rotateX(180deg)`,
+        config: { mass: 5, tension: 500, friction: 80 }
+    }))
 
+    useEffect(() => {
+        set({
+            transform: toggle ? `perspective(600px) rotateX(0deg)` : `perspective(600px) rotateX(180deg)`,
+            config: { mass: 5, tension: 500, friction: 80 }
+        })
+        setToggle(!toggle)
+    }, [alive, history])
+
+    return (     
+            <a.div 
+                onClick={handleClick}
+                style={transform}
+                css={{
+                    padding: "5px",
+                    height: "5px",
+                    width: "5px",
+                    border: "2px solid #3C1922",
+                    borderRadius: "3px",
+                    fontSize: "10px",
+                    margin: "5px",
+                    backgroundColor:`${ alive ? Theme.alive : history ? Theme.history : Theme.dead }`
+                }} 
+            />
+    )
 }
-const CellContainer = styled('div')` 
-    padding: 5px;
-    height: 5px;
-    width: 5px;
-    border: 2px solid #3C1922;
-    border-radius: 3px;
-    font-size: 10px;
-    margin: 5px;
-`
-
-const AliveContainer = styled(CellContainer)`
-    background-color: #B6EBF0;
-`
-
-const HistoryContainer = styled(CellContainer)`
-    background-color: #FCE98F;
-`
-
-const DeadContainer = styled(CellContainer)`
-    background-color: #94685F;
-`
 
 
-export default Cell
+
+export default CellContainer

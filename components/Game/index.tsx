@@ -1,8 +1,9 @@
 import React, { FunctionComponent, useState } from 'react'
 import styled from '@emotion/styled'
 
+import { initialStates } from '../../utils/initial-states'
 import Grid from '../Grid'
-
+import BaseButton from '../BaseButton'
 
 interface Levels  {
     [level: string]: {
@@ -16,74 +17,43 @@ const Game:FunctionComponent = () => {
     const [ won, setWon ] = useState(false)
     const [ lost, setLost ] = useState(false)
     const [ level, setLevel ] = useState(0)
-
-    const initialStates: {[index: string]: boolean[][]} = {
-        "4x4-block-center": [
-            [false, false, false, false],
-
-            [false, true, true, false],
-
-            [false, true, true, false],
-            
-            [false, false, false, false],
-        ],
-        "6x6-toad-center": [
-            [false, false, false, false, false, false],
-
-            [false, false, false, false, false, false],
-
-            [false, false, true, true, true, false],
-
-            [false, true, true, true, false, false],
-
-            [false, false, false, false, false, false],
-
-            [false, false, false, false, false, false],
-        ],
-        "5x5-blinker-center": [
-            [false, false, false, false, false],
-            
-            [false, false, true, false, false],
-
-            [false, false, true, false, false],
-
-            [false, false, true, false, false],
-
-            [false, false, false, false, false],
-
-        ] 
-    }
-
+    const [ reset, setReset ] = useState(false)
+    
     const levels: Levels = {
-        "0": {
+        0: {
             type: "expand",
             initialState: initialStates["4x4-block-center"]
         },
-        "1": {
+        1: {
+            type: "expand",
+            initialState: initialStates["5x5-blinker-center"]
+        },
+        2: {
             type: "expand",
             initialState: initialStates["6x6-toad-center"]
         },
-        "2": {
+        3: {
             type: "expand",
-            initialState: initialStates["5x5-blinker-center"]
-        }
+            initialState: initialStates["7x30-lightweight-spaceship-left"]
+        },
+    }
+
+    const handleNext = () => {
+        setReset(true)
+        setLevel(level + 1)
+        setWon(false)
+        setLost(false)
+        setReset(false)
     }
     
     return (
         <GameContainer>
-            { won ? <NextLevel onClick={() => setLevel(level + 1)}>Next</NextLevel> : null}
-            <Grid level={levels[level]} won={won} setWon={setWon} lost={lost} setLost={setLost} />
+            { won ? <BaseButton onClick={handleNext} text={'Next Level'} /> : null }
+            <BaseButton onClick={handleNext} text={'Sneaky'} />
+            { reset ? null : <Grid key={level} level={levels[level]} won={won} setWon={setWon} lost={lost} setLost={setLost} />}
         </GameContainer>
     )
 }
-
-const NextLevel = styled(`div`)`
-    justify-content: center;
-    align-items: center;
-    border-radius: 8px;
-    color: #3C1922;
-    border-width: 1px;
-`
 
 const GameContainer = styled('div')` 
     height: 100%;
