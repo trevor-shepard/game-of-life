@@ -51,7 +51,7 @@ const Game:FunctionComponent = () => {
     
     return (
         <GameContainer>
-            <h1>Did i deploy?</h1>
+            <h1>Did i did not deploy?</h1>
             { won ? <BaseButton onClick={handleNext} text={'Next Level'} /> : null }
             <SneakyButton onClick={handleNext}>You're a cheater</SneakyButton>
             { reset ? null : <Grid key={level} level={levels[level]} won={won} setWon={setWon} lost={lost} setLost={setLost} />}
