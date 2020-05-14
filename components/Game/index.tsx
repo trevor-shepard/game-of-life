@@ -5,6 +5,9 @@ import { initialStates } from '../../utils/initial-states'
 import Grid from '../Grid'
 import BaseButton from '../BaseButton'
 
+import Theme from '../../utils/theme'
+
+
 interface Levels  {
     [level: string]: {
         type: string,
@@ -49,7 +52,7 @@ const Game:FunctionComponent = () => {
     return (
         <GameContainer>
             { won ? <BaseButton onClick={handleNext} text={'Next Level'} /> : null }
-            <BaseButton onClick={handleNext} text={'Sneaky'} />
+            <SneakyButton onClick={handleNext}>You're a cheater</SneakyButton>
             { reset ? null : <Grid key={level} level={levels[level]} won={won} setWon={setWon} lost={lost} setLost={setLost} />}
         </GameContainer>
     )
@@ -62,9 +65,17 @@ const GameContainer = styled('div')`
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    position: relative;
 `
 
+const SneakyButton = styled('button')`
+    position: absolute;
+    left: 100px;
+    top: 100px;
+    border-color: ${Theme.default};
+    color: ${Theme.default};
+    background-color: ${Theme.default}
 
-
+` 
 
 export default Game
