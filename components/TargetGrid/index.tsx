@@ -7,7 +7,11 @@ import React, {
 } from "react";
 import styled from "@emotion/styled";
 
-import { countNeighbors, checkWon, checkLost } from "../../utils/game-cycle";
+import {
+  countNeighbors,
+  checkLost,
+  recordHistory,
+} from "../../utils/game-cycle";
 
 import Row from "../Row";
 type GridProps = {
@@ -19,9 +23,8 @@ type GridProps = {
 };
 
 interface Level {
-  // type: string,
   initialState: boolean[][];
-  // target?: [number, number]
+  target: [number, number];
 }
 
 const Board: FunctionComponent<GridProps> = ({
@@ -31,27 +34,27 @@ const Board: FunctionComponent<GridProps> = ({
   setWon,
   setLost,
 }) => {
-  const {
-    initialState,
-    // type
-  } = level;
+  const { initialState, target } = level;
+
+  const [targetY, targetX] = target;
+
   const [boardState, setBoardState] = useState(initialState);
   const [historyState, setHistoryState] = useState(initialState);
   const [time, setTime] = useState(1);
 
   const mirrorBoard: boolean[][] = JSON.parse(JSON.stringify(boardState));
 
-  const handleClick: (y: number, x: number) => () => void = (y, x) => () => {
+  const handleClick = (y: number, x: number): void => {
     if (countNeighbors(y, x, boardState)) {
       mirrorBoard[y][x] = true;
       setBoardState(mirrorBoard);
     }
   };
 
-  // game cycle
-  useEffect((): (() => void) | undefined => {
+  useEffect((): (() => void) | undefined | void => {
     checkLost(boardState, setLost);
-    checkWon(historyState, boardState, setWon, setHistoryState);
+    if (boardState[targetY][targetX]) return setWon(true);
+    recordHistory(setHistoryState, boardState, historyState)
     for (let y = 0; y < boardState.length; y++)
       for (let x = 0; x < boardState[y].length; x++) {
         const cell = boardState[y][x];

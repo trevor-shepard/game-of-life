@@ -9,12 +9,14 @@ type CellProps = {
   alive: boolean;
   history: boolean;
   handleClick(): void;
+  isTarget?: boolean;
 };
 
 const CellContainer: FunctionComponent<CellProps> = ({
   alive,
   history,
   handleClick,
+  isTarget,
 }) => {
   const [toggle, setToggle] = useState(false);
   const [transform, set] = useSpring(() => ({
@@ -34,7 +36,7 @@ const CellContainer: FunctionComponent<CellProps> = ({
 
   return (
     <a.div
-      onClick={handleClick}
+      onClick={isTarget ? (): void => console.log("Im a target") : handleClick}
       style={transform}
       css={{
         padding: "5px",
@@ -45,7 +47,13 @@ const CellContainer: FunctionComponent<CellProps> = ({
         fontSize: "10px",
         margin: "5px",
         backgroundColor: `${
-          alive ? Theme.alive : history ? Theme.history : Theme.dead
+          isTarget
+            ? Theme.target
+            : alive
+            ? Theme.alive
+            : history
+            ? Theme.history
+            : Theme.dead
         }`,
       }}
     />

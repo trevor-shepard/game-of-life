@@ -6,7 +6,8 @@ type RowProps = {
   cellStates: boolean[];
   cellHistory: boolean[];
   y: number;
-  handleClick(y: number, x: number): () => void;
+  handleClick: (y: number, x: number) => void;
+  target?: [number, number];
 };
 
 const CellRow: React.FunctionComponent<RowProps> = ({
@@ -14,15 +15,15 @@ const CellRow: React.FunctionComponent<RowProps> = ({
   y,
   handleClick,
   cellHistory,
+  target,
 }) => {
-  if (!cellStates) debugger;
-
   const cells = cellStates.map((alive, x) => (
     <Cell
       key={`y-${y}, x-${x}`}
       history={cellHistory[x]}
       alive={alive}
-      handleClick={handleClick(y, x)}
+      handleClick={(): void => handleClick(y, x)}
+      isTarget={target && target[0] === y && target[1] === x ? true : false}
     />
   ));
 
