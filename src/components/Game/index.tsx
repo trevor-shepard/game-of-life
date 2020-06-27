@@ -1,50 +1,21 @@
 import React, { FunctionComponent, useState } from "react";
 import styled from "@emotion/styled";
 
-import { initialStates } from "../../utils/initial-states";
 import ExpandGrid from "../ExpandGrid";
 import TargetGrid from "../TargetGrid";
-import BaseButton from "../BaseButton";
+import BaseButton from "../base/BaseButton";
 
 import Theme from "../../utils/theme";
 
-interface Levels {
-  [level: string]: {
-    type: string;
-    initialState: boolean[][];
-    target: [number, number];
-  };
-}
+import { levels } from "../../utils/levels";
+
 const Game: FunctionComponent = () => {
   const [won, setWon] = useState(false);
   const [lost, setLost] = useState(false);
   const [level, setLevel] = useState(0);
   const [reset, setReset] = useState(false);
 
-  const levels: Levels = {
-    0: {
-      type: "expand",
-      initialState: initialStates["4x4-block-center"],
-      target: [-1, -1],
-    },
-    1: {
-      type: "target",
-      initialState: initialStates["5x5-blinker-center"],
-      target: [1, 1],
-    },
-    2: {
-      type: "expand",
-      initialState: initialStates["6x6-toad-center"],
-      target: [-1, -1],
-    },
-    3: {
-      type: "expand",
-      initialState: initialStates["7x30-lightweight-spaceship-left"],
-      target: [-1, -1],
-    },
-  };
-
-  const handleNext = () => {
+  const handleNext = (): void => {
     setReset(true);
     setLevel(level + 1);
     setWon(false);
@@ -52,7 +23,7 @@ const Game: FunctionComponent = () => {
     setReset(false);
   };
 
-  const currentLevel = levels[level]
+  const currentLevel = levels[level];
 
   const getBoard = () => {
     switch (currentLevel.type) {
@@ -105,7 +76,7 @@ const SneakyButton = styled("button")`
   position: absolute;
   left: 100px;
   top: 100px;
-  border-color: ${Theme.default};
+  border: none;
   color: ${Theme.default};
   background-color: ${Theme.default};
 `;

@@ -1,6 +1,7 @@
-import Game from "../components/Game";
+/* eslint-disable react/react-in-jsx-scope */
+import Game from "../src/components/Game";
 import styled from "@emotion/styled";
-import Theme from "../utils/theme";
+import Theme from "../src/utils/theme";
 
 export default function Home() {
   return (
