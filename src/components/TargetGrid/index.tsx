@@ -37,7 +37,7 @@ const Board: FunctionComponent<GridProps> = ({
   const { initialState, target } = level;
 
   const [targetY, targetX] = target;
-
+  
   const [boardState, setBoardState] = useState(initialState);
   const [historyState, setHistoryState] = useState(initialState);
   const [time, setTime] = useState(1);
@@ -85,6 +85,7 @@ const Board: FunctionComponent<GridProps> = ({
         cellHistory={historyState[y]}
         cellStates={boardState[y]}
         handleClick={handleClick}
+        target={target}
       />
     )
   );
