@@ -29,21 +29,21 @@ const CellContainer: FunctionComponent<CellProps> = ({
   const getColor1 = () => {
     if (isTarget) return Theme.target1
 
-    if (alive) return Theme.alive
+    if (alive) return Theme.alive1
 
-    if (history) return Theme.history
+    if (history) return Theme.history1
 
-    return Theme.dead
+    return Theme.dead1
   }
 
   const getColor2 = () => {
     if (isTarget) return Theme.target2
 
-    if (alive) return Theme.alive
+    if (alive) return Theme.alive1
 
-    if (history) return Theme.history
+    if (history) return Theme.history1
 
-    return Theme.dead
+    return Theme.dead2
   }
 
   const { backgroundColor } = useSpring({
@@ -52,7 +52,7 @@ const CellContainer: FunctionComponent<CellProps> = ({
 
 
   useEffect(() => {
-    const timer = setInterval(() => setColorToggle(!colorToggle), 1000);
+    const timer = setInterval(() => setColorToggle(!colorToggle), 2000);
     return () => clearInterval(timer);
   }, [colorToggle])
 
@@ -86,6 +86,7 @@ const CellContainer: FunctionComponent<CellProps> = ({
           backgroundColor
         }}
         css={{
+          "will-change": "transform, backgroundColor",
           padding: "5px",
           height: "5px",
           width: "5px",
@@ -93,7 +94,6 @@ const CellContainer: FunctionComponent<CellProps> = ({
           borderRadius: "3px",
           fontSize: "10px",
           margin: "5px",
-          
         }}
       />
       {isTarget && alive && (
