@@ -19,30 +19,72 @@ const CellContainer: FunctionComponent<CellProps> = ({
   isTarget,
 }) => {
   const [toggle, setToggle] = useState(false);
-  const [transform, set] = useSpring(() => ({
+
+  const [colorToggle, setColorToggle] = useState(false);
+  const [springProps, set] = useSpring(() => ({
     transform: `perspective(600px) rotateX(180deg)`,
     config: { mass: 5, tension: 500, friction: 80 },
   }));
+
+  const getColor1 = () => {
+    if (isTarget) return Theme.target1
+
+    if (alive) return Theme.alive
+
+    if (history) return Theme.history
+
+    return Theme.dead
+  }
+
+  const getColor2 = () => {
+    if (isTarget) return Theme.target2
+
+    if (alive) return Theme.alive
+
+    if (history) return Theme.history
+
+    return Theme.dead
+  }
+
+  const { backgroundColor } = useSpring({
+    backgroundColor: colorToggle ? getColor1() : getColor2()
+  })
+
+
+  useEffect(() => {
+    const timer = setInterval(() => setColorToggle(!colorToggle), 1000);
+    return () => clearInterval(timer);
+  }, [colorToggle])
+
 
   useEffect(() => {
     set({
       transform: toggle
         ? `perspective(600px) rotateX(0deg)`
         : `perspective(600px) rotateX(180deg)`,
+      
       config: { mass: 5, tension: 500, friction: 80 },
     });
+
     setToggle(!toggle);
   }, [alive, history]);
 
   const CellRef = useRef()
 
+  
+
+
+  
   return (
     <>
       <a.div
         onClick={
           isTarget ? (): void => console.log("Im a target") : handleClick
         }
-        style={transform}
+        style={{
+          ...springProps,
+          backgroundColor
+        }}
         css={{
           padding: "5px",
           height: "5px",
@@ -51,15 +93,7 @@ const CellContainer: FunctionComponent<CellProps> = ({
           borderRadius: "3px",
           fontSize: "10px",
           margin: "5px",
-          backgroundColor: `${
-            isTarget
-              ? Theme.target
-              : alive
-              ? Theme.alive
-              : history
-              ? Theme.history
-              : Theme.dead
-          }`,
+          
         }}
       />
       {isTarget && alive && (

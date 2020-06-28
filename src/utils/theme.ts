@@ -3,7 +3,9 @@ const Theme = {
   dead: "#94685F",
   history: "#FCE98F",
   default: "#D9C791",
-  target: "#FACC46",
+  target1: "#FACC46",
+  target2: "#FAAF58",
+
 };
 
 export default Theme;
