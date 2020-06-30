@@ -10,6 +10,8 @@ type CellProps = {
   history: boolean;
   handleClick(): void;
   isTarget?: boolean;
+  y: number;
+  x: number;
 };
 
 const CellContainer: FunctionComponent<CellProps> = ({
@@ -17,6 +19,8 @@ const CellContainer: FunctionComponent<CellProps> = ({
   history,
   handleClick,
   isTarget,
+  x,
+  y,
 }) => {
   const [toggle, setToggle] = useState(false);
 
@@ -52,7 +56,7 @@ const CellContainer: FunctionComponent<CellProps> = ({
 
 
   useEffect(() => {
-    const timer = setInterval(() => setColorToggle(!colorToggle), 2000);
+    const timer = setInterval(() => setColorToggle(!colorToggle), 3000 + (y * 100));
     return () => clearInterval(timer);
   }, [colorToggle])
 
