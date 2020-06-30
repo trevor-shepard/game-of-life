@@ -70,8 +70,7 @@ const Board: FunctionComponent<GridProps> = ({
 
     if (!won && !lost) {
       setBoardState(mirrorBoard);
-      const timer = setInterval(() => setTime(time + 1), 500);
-      return () => clearInterval(timer);
+      setTimeout(() => setTime(time + 1), 500);
     }
     return undefined;
   }, [time]);

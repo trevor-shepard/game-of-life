@@ -10,6 +10,8 @@ type CellProps = {
   history: boolean;
   handleClick(): void;
   isTarget?: boolean;
+  y: number;
+  x: number;
 };
 
 const CellContainer: FunctionComponent<CellProps> = ({
@@ -17,33 +19,73 @@ const CellContainer: FunctionComponent<CellProps> = ({
   history,
   handleClick,
   isTarget,
+  x,
+  y,
 }) => {
   const [toggle, setToggle] = useState(false);
-  const [transform, set] = useSpring(() => ({
+
+  const [colorToggle, setColorToggle] = useState(false);
+  const [springProps, set] = useSpring(() => ({
     transform: `perspective(600px) rotateX(180deg)`,
     config: { mass: 5, tension: 500, friction: 80 },
   }));
 
+  const getColor1 = () => {
+    if (isTarget) return Theme.target1
+
+    if (alive) return Theme.alive1
+
+    if (history) return Theme.history1
+
+    return Theme.dead1
+  }
+
+  const getColor2 = () => {
+    if (isTarget) return Theme.target2
+
+    if (alive) return Theme.alive1
+
+    if (history) return Theme.history1
+
+    return Theme.dead2
+  }
+
+  const { backgroundColor } = useSpring({
+    backgroundColor: colorToggle ? getColor1() : getColor2()
+  })
+
+  setTimeout(() => setColorToggle(!colorToggle), 3000 + (y * 100));
+ 
   useEffect(() => {
     set({
       transform: toggle
         ? `perspective(600px) rotateX(0deg)`
         : `perspective(600px) rotateX(180deg)`,
+      
       config: { mass: 5, tension: 500, friction: 80 },
     });
+
     setToggle(!toggle);
   }, [alive, history]);
 
   const CellRef = useRef()
 
+  
+
+
+  
   return (
     <>
       <a.div
         onClick={
           isTarget ? (): void => console.log("Im a target") : handleClick
         }
-        style={transform}
+        style={{
+          ...springProps,
+          backgroundColor
+        }}
         css={{
+          "will-change": "transform, backgroundColor",
           padding: "5px",
           height: "5px",
           width: "5px",
@@ -51,15 +93,6 @@ const CellContainer: FunctionComponent<CellProps> = ({
           borderRadius: "3px",
           fontSize: "10px",
           margin: "5px",
-          backgroundColor: `${
-            isTarget
-              ? Theme.target
-              : alive
-              ? Theme.alive
-              : history
-              ? Theme.history
-              : Theme.dead
-          }`,
         }}
       />
       {isTarget && alive && (

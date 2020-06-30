@@ -24,6 +24,8 @@ const CellRow: React.FunctionComponent<RowProps> = ({
       alive={alive}
       handleClick={(): void => handleClick(y, x)}
       isTarget={target && target[0] === y && target[1] === x ? true : false}
+      y={y}
+      x={x}
     />
   ));
 
