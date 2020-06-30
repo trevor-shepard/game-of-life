@@ -23,6 +23,11 @@ const Game: FunctionComponent = () => {
     setReset(false);
   };
 
+  // const handleReset = (): void => {
+  //   setReset(true);
+
+  // }
+
   const currentLevel = levels[level];
 
   const getBoard = () => {
@@ -56,6 +61,7 @@ const Game: FunctionComponent = () => {
   return (
     <GameContainer>
       {won ? <BaseButton onClick={handleNext} text={"Next Level"} /> : null}
+      {lost ? <BaseButton onClick={handleNext} text={"Try Again"} /> : null}
       <SneakyButton onClick={handleNext}>You&apos;re a cheater</SneakyButton>
       {reset ? null : getBoard()}
     </GameContainer>

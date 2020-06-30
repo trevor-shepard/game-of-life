@@ -9,12 +9,12 @@ export interface Levels {
 }
 
 export const levels: Levels = {
-  0: {
+  1: {
     type: "target",
     initialState: initialStates["5x5-blinker-center"],
-    target: [1, 1],
+    target: [0, 4],
   },
-  1: {
+  0: {
     type: "expand",
     initialState: initialStates["4x4-block-center"],
     target: [-1, -1],

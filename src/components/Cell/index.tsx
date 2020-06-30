@@ -54,13 +54,8 @@ const CellContainer: FunctionComponent<CellProps> = ({
     backgroundColor: colorToggle ? getColor1() : getColor2()
   })
 
-
-  useEffect(() => {
-    const timer = setInterval(() => setColorToggle(!colorToggle), 3000 + (y * 100));
-    return () => clearInterval(timer);
-  }, [colorToggle])
-
-
+  setTimeout(() => setColorToggle(!colorToggle), 3000 + (y * 100));
+ 
   useEffect(() => {
     set({
       transform: toggle

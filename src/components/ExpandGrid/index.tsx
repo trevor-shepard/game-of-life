@@ -54,7 +54,7 @@ const Board: FunctionComponent<GridProps> = ({
   };
 
   // game cycle
-  useEffect((): (() => void) | undefined => {
+  useEffect(() => {
     checkLost(boardState, setLost);
     checkWon(historyState, boardState, setWon, setHistoryState);
     for (let y = 0; y < boardState.length; y++)
@@ -73,10 +73,8 @@ const Board: FunctionComponent<GridProps> = ({
     if (!won && !lost) {
       setBoardState(mirrorBoard);
       recordHistory(setHistoryState, boardState, historyState)
-      const timer = setInterval(() => setTime(time + 1), 500);
-      return () => clearInterval(timer);
+      setTimeout(() => setTime(time + 1), 500);
     }
-    return undefined;
   }, [time]);
 
   const grid: JSX.Element[] = Array.from(
